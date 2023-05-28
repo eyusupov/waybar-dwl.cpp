@@ -66,8 +66,7 @@ int main(int argc, char **argv) {
                       }
                     } else if (component == "title") {
                       if (event == "title") {
-                        std::string title;
-                        iss >> title;
+                        std::string title((std::istreambuf_iterator<char>(iss)), std::istreambuf_iterator<char>());
                         std::cout << "{\"text\": \"" << title << "\"}" << '\n';
                       }
                     } else {
