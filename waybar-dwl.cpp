@@ -18,11 +18,12 @@ int main(int argc, char **argv) {
     std::string line, component;
     std::vector<std::string> tag_names = {"1", "2", "3", "4", "5", "F1", "F2", "F3", "F4", "F5"};
 
-    if (argc != 2) {
+    if (argc != 3) {
       std::cout << "Pass component as an argument\n";
       return 1;
     }
-    component = argv[1];
+    // TODO: handle display (first arg)
+    component = argv[2];
 
     int fd = inotify_init();
     if (fd == -1) {
