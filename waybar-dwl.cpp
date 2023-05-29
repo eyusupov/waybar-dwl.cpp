@@ -10,7 +10,8 @@
 #include <unistd.h>
 #include <limits.h>
 
-#define BUF_SIZE (10 * (sizeof(struct inotify_event) + NAME_MAX + 1))
+const int inotifyBufSize = 10 * (sizeof(struct inotify_event) + NAME_MAX + 1);
+const int maxTitleLength = 92;
 
 int main(int argc, char **argv) {
     std::filesystem::path filePath = "/home/eyusupov/.cache/dwltags";
@@ -37,7 +38,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    char buffer[BUF_SIZE];
+    char buffer[inotifyBufSize];
     ssize_t bytesRead;
     while (true) {
         bytesRead = read(fd, buffer, sizeof(buffer));
@@ -67,6 +68,9 @@ int main(int argc, char **argv) {
                     } else if (component == "title") {
                       if (event == "title") {
                         std::string title((std::istreambuf_iterator<char>(iss)), std::istreambuf_iterator<char>());
+                        if (title.length() > maxTitleLength) {
+                          title = title.substr(0, maxTitleLength - 3) + "...";
+                        }
                         std::cout << "{\"text\": \"" << title << "\"}" << '\n';
                       }
                     } else {
